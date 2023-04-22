@@ -13,26 +13,36 @@ export default function App(){
   const [isLoading, setIsLoading] = useState(false);
   const [showBtn, setShowBtn] = useState(false);
 
-useEffect(() =>{
-if(!search){
-  return;
-}
-setIsLoading(true);
- fetchImg(search, page).then(response => {
-  setImages(prevState=>[...images, ...response.hits]);
-          setShowBtn(page < Math.ceil(response.totalHits / 12));
-
-          if(!response.hits.length) {
-            toast.error(`These are no "${search}" images`);
-            return;
-          };
-          if(page === 1) {
-            toast.success(`We found ${response.totalHits} images`);
-          };
-        })
-        .catch(error => console.log(error))
-        .finally(() => {setIsLoading(false)});
-      },[search, page]);
+  useEffect(()=>{
+    if (search.trim() === '') {
+      return;
+    };
+    
+    fetchImg(search, page).then(
+      response => {
+        setImages(images => [...images, ...response.hits]);
+        setShowBtn(page < Math.ceil(response.totalHits / 12));
+        
+        if(!response.hits.length) {
+          toast.error(`These are no "${search}" images`);
+          return;
+        };
+        
+        if(page === 1) {
+          toast.success(`We found ${response.totalHits} images`);
+        };
+      }
+    ).catch(
+      error => { 
+        toast.error(error.message);
+        console.log(error); 
+      }
+    ).finally(
+      () => {
+        setIsLoading(false);
+      }
+    );
+  },[search, page]);
 
 
  const handleSearch = text => {

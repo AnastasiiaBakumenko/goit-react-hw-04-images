@@ -17,7 +17,7 @@ export default function App(){
     if (search.trim() === '') {
       return;
     };
-    
+    if (setSearch !== search || setPage !== page){
     fetchImg(search, page).then(
       response => {
         setImages(images => [...images, ...response.hits]);
@@ -41,16 +41,17 @@ export default function App(){
       () => {
         setIsLoading(false);
       }
-    );
+    );};
   },[search, page]);
 
 
  const handleSearch = text => {
     setSearch(text);
     setPage(1);
+    setImages([]);
     };
 const handleLoadMore = () => {
-    setPage(prevState => ({ page: prevState.page + 1 }));
+  setPage(prevState =>  prevState + 1 );
   };
 
 return (

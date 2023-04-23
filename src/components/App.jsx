@@ -52,6 +52,7 @@ export default function App(){
     };
 const handleLoadMore = () => {
   setPage(prevState =>  prevState + 1 );
+  
   };
 
 return (
